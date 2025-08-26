@@ -4,46 +4,47 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+
+            // Identificación básica
+            $table->string('name');                           // Nombre completo
+            $table->string('email')->nullable()->unique();    // Correo (opcional, único)
+            $table->string('phone', 30)->nullable()->unique();// Teléfono (opcional, único)
+
+            // Documento (útil para programas de puntos y facturación)
+            $table->string('document_type', 20)->nullable();  // CC, CE, PASS, NIT, etc.
+            $table->string('document_number', 50)->nullable()->unique();
+
+            // Credenciales (si el mismo user accede a backoffice/app)
+            $table->string('password')->nullable();
+
+            // Perfil opcional
+            $table->unsignedBigInteger('city_id')->nullable()->index(); // FK se agrega cuando exista cities
+            $table->date('birthdate')->nullable();
+            $table->enum('gender', ['male','female','other','unspecified'])->default('unspecified');
+
+            // Preferencias y estado
+            $table->boolean('marketing_opt_in')->default(false); // permiso de marketing
+            $table->timestamp('last_login_at')->nullable();
+            $table->enum('status', ['active','inactive','blocked'])->default('active');
+
+            // Auditoría
             $table->rememberToken();
             $table->timestamps();
-        });
+            $table->softDeletes();
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
+            // Índices compuestos opcionales (descomenta si aplican a tu negocio)
+            // $table->index(['document_type', 'document_number']);
+            // $table->index(['status', 'city_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };
