@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');               // Ej: "Ver reportes"
-            $table->string('slug')->unique();     // Ej: "reports.view"
-            $table->string('description')->nullable();
+            $table->increments('id_permission');     // PK
+            $table->string('code', 80)->unique();    // ejemplos de algunoos permisos que estan enlazados al rol 'orders.read', 'menu.write', 'loyalty.manage'
+            $table->string('description', 200)->nullable();
             $table->timestamps();
+            // $table->softDeletes();
+
+            //Fk- tabla puente 
+
         });
     }
 
