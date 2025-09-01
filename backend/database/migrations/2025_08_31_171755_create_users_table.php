@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
 
-             $table->increments('id_user');                       // PK
+            $table->increments('id_user');                       // PK
             $table->unsignedInteger('id_person');                // FK a persons
             $table->string('username', 80)->unique();            // usuario (puede ser email u otro)
             $table->string('password_hash');                     // contraseña encriptada
