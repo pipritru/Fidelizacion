@@ -21,12 +21,12 @@ class cities extends Model
     // Relación con la tabla 'state'
     public function state()
     {
-        return $this->belongsTo(State::class, 'id_state', 'id_state');
+        return $this->belongsTo(state::class, 'id_state', 'id_state');
     }
 
     // Reglas de validación (puedes ajustarlas según tus necesidades)
     public static $rules = [
-        'name' => 'required|string|max:120|unique:cities,name,id_state',
-        'id_state' => 'required|exists:states,id_state',
+        'name' => 'required|string|max:120|unique:cities,name,NULL,id_city,id_state',
+        'id_state' => 'required|exists:state,id_state',
     ];
 }

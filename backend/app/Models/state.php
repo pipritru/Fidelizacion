@@ -11,15 +11,13 @@ class state extends Model
 
     // Nombre de la tabla
     protected $table = 'state';
-
-    // Atributos que son asignables
-    protected $fillable = [
-        'name',
-    ];
-
-    // Si no quieres que Laravel maneje automáticamente las columnas created_at y updated_at, puedes desactivarlo.
+    protected $primaryKey = 'id_state';// <-- PK real
+    public $incrementing = true;       // autoincrement (opcional, por claridad)
+    protected $keyType = 'int';        // tipo de PK (opcional)
     public $timestamps = true;
-    
+    protected $fillable = ['name'];
+
+
     // Definir reglas para validación, si es necesario
     public static $rules = [
         'name' => 'required|string|max:100|unique:state,name',

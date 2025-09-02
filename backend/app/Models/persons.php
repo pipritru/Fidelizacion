@@ -32,8 +32,8 @@ class persons extends Model
     public static $rules = [
         'first_name' => 'required|string|max:80',
         'last_name' => 'nullable|string|max:80',
-        'national_id' => 'nullable|string|max:40|unique:persons,national_id',
-        'email' => 'nullable|string|max:150|unique:persons,email',
+        'national_id' => 'nullable|string|max:40|unique:persons,national_id,NULL,id_person',
+        'email' => 'nullable|string|max:150|unique:persons,email,NULL,id_person',
         'phone' => 'nullable|string|max:30',
         'address' => 'nullable|string|max:200',
         'id_city' => 'nullable|exists:cities,id_city',

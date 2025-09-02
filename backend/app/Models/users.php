@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class users extends Model
 {
     use HasFactory;
 
@@ -29,7 +29,7 @@ class User extends Model
 
     // Reglas de validación
     public static $rules = [
-        'username' => 'required|string|max:80|unique:users,username',
+        'username' => 'required|string|max:80|unique:users,username,NULL,id_user',
         'password_hash' => 'required|string|min:8',
         'status' => 'required|in:active,suspended',
     ];
