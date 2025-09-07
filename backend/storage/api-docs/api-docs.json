@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Cities API",
-        "description": "API para gestionar ciudades dentro de un estado",
+        "title": "El mejor swagger de la historia",
+        "description": "API para gestiar el proyecto de fidelizacion",
         "contact": {
             "email": "soporte@tuempresa.com"
         },

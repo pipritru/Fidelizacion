@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('state', function (Blueprint $table) {
-            $table->increments('id_state');          // INT PK autoincrement
-            $table->string('name', 100); 
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
-            $table->unique(['name']);
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('state');
+        Schema::dropIfExists('roles');
     }
 };
