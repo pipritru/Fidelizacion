@@ -44,7 +44,14 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                  */
                 'annotations' => [
-                    base_path('app'),
+                     base_path('app/Http/Controllers'),
+                     base_path('app/Models/Users.php'),
+                     base_path('app/Models/Product.php'),
+                     base_path('app/Models/State.php'),
+                     base_path('app/Models/Role.php'),
+                     base_path('app/Models/Permission.php'),
+                     base_path('app/Models/City.php'),
+
                 ],
             ],
         ],
@@ -98,8 +105,9 @@ return [
              * @deprecated Please use `scanOptions.exclude`
              * `scanOptions.exclude` overwrites this
              */
-            'excludes' => [],
-        ],
+              'excludes' => [
+    ],
+],
 
         'scanOptions' => [
             /**

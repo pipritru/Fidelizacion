@@ -2,15 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model
+class Users extends Authenticatable
 {
-    protected $fillable = ['username', 'password', 'person_id', 'role_id', 'is_active', 'last_login'];
+    use HasApiTokens, Notifiable;
+
+    protected $fillable = [
+        'username', 'password', 'person_id', 'role_id', 'is_active', 'last_login'
+    ];
+
+    protected $hidden = ['password'];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'last_login' => 'datetime',
+    ];
 
     public function person()
     {
-        return $this->belongsTo(Person::class);
+        return $this->belongsTo(Person::class 'person_id');
     }
 
     public function role()

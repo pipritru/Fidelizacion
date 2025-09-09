@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Person extends Model
 {
+
+    protected $table = 'persons';
     protected $fillable = ['first_name', 'last_name', 'email', 'address', 'city_id', 'state_id', 'created_date'];
 
     public function city()

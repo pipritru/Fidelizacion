@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *   schema="Role",
+ *   type="object",
+ *   required={"id","name"},
+ *   @OA\Property(property="id", type="integer", example=1),
+ *   @OA\Property(property="name", type="string", example="admin"),
+ *   @OA\Property(property="description", type="string", example="Administrator role")
+ * )
+ */
+
 class RoleController extends Controller
 {
     /**

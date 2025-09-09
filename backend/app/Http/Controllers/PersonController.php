@@ -7,6 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
 
+
+/**
+ * @OA\Schema(
+ *     schema="Person",
+ *     type="object",
+ *     required={"id", "first_name", "last_name", "email", "city_id", "state_id"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="first_name", type="string", example="Juan"),
+ *     @OA\Property(property="last_name", type="string", example="Pérez"),
+ *     @OA\Property(property="email", type="string", example="juan@email.com"),
+ *     @OA\Property(property="address", type="string", example="Calle 123"),
+ *     @OA\Property(property="city_id", type="integer", example=1),
+ *     @OA\Property(property="state_id", type="integer", example=1),
+ *     @OA\Property(property="created_date", type="string", format="date-time", example="2024-01-01T00:00:00Z")
+ * )
+ */
+
 class PersonController extends Controller
 {
     /**

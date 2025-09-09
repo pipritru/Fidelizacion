@@ -7,6 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
 
+
+/**
+ * @OA\Schema(
+ *     schema="Permission",
+ *     type="object",
+ *     required={"id", "name"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="edit_articles"),
+ *     @OA\Property(property="description", type="string", example="Permission to edit articles"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T00:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-01-01T00:00:00Z")
+ * )
+ */
+
 class PermissionController extends Controller
 {
     /**

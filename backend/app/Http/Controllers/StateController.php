@@ -6,7 +6,15 @@ use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-
+/**
+ * @OA\Schema(
+ *     schema="State",
+ *     type="object",
+ *     required={"id", "name"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Cundinamarca")
+ * )
+ */
 
 class StateController extends Controller
 {

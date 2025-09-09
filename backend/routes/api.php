@@ -7,7 +7,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -32,7 +32,7 @@ Route::resource('cities', CityController::class);
 Route::resource('persons', PersonController::class);
 Route::resource('roles', RoleController::class);   
 Route::resource('permissions', PermissionController::class);
-Route::resource('users', UsersController::class);
+Route::resource('users', UserController::class);
 Route::post('users/register', [UserController::class, 'register']);
 Route::post('users/login', [UserController::class, 'login']);
 

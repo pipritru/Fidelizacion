@@ -1,11 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "El mejor swagger de la historia",
-        "description": "API para gestiar el proyecto de fidelizacion",
-        "contact": {
-            "email": "soporte@tuempresa.com"
-        },
+        "title": "Fidelizacion API",
+        "description": "API Documentacion para mirar los endpoints de fidelizacion THE BEST",
         "version": "1.0.0"
     },
     "paths": {
@@ -15,7 +12,19 @@
                     "Cities"
                 ],
                 "summary": "Retrieve a list of cities",
-                "operationId": "a27dd2b6882a90db7a2dd9d66b3db104",
+                "description": "Get all cities with optional state filter",
+                "operationId": "getCities",
+                "parameters": [
+                    {
+                        "name": "state_id",
+                        "in": "query",
+                        "description": "Filter by state ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -37,20 +46,22 @@
                     "Cities"
                 ],
                 "summary": "Create a new city",
-                "operationId": "0c5fa86d00425be5a99cd875d10194b3",
+                "description": "Add a new city",
+                "operationId": "createCity",
                 "requestBody": {
+                    "description": "City details",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CityRequest"
+                                "$ref": "#/components/schemas/City"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "City created successfully",
+                        "description": "City created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -59,8 +70,8 @@
                             }
                         }
                     },
-                    "422": {
-                        "description": "Validation error"
+                    "400": {
+                        "description": "Invalid input"
                     }
                 }
             }
@@ -71,11 +82,13 @@
                     "Cities"
                 ],
                 "summary": "Retrieve a specific city",
-                "operationId": "929bb5997ce0196edffdd56ebc512b5f",
+                "description": "Get city by ID",
+                "operationId": "getCityById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "City ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -102,12 +115,14 @@
                 "tags": [
                     "Cities"
                 ],
-                "summary": "Update a specific city",
-                "operationId": "6de0fea74601f9cc54b44cfda58d0dbe",
+                "summary": "Update a city",
+                "description": "Update city details",
+                "operationId": "updateCity",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "City ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -115,18 +130,19 @@
                     }
                 ],
                 "requestBody": {
+                    "description": "Updated city details",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CityRequest"
+                                "$ref": "#/components/schemas/City"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "City updated successfully",
+                        "description": "City updated",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -137,9 +153,6 @@
                     },
                     "404": {
                         "description": "City not found"
-                    },
-                    "422": {
-                        "description": "Validation error"
                     }
                 }
             },
@@ -147,12 +160,14 @@
                 "tags": [
                     "Cities"
                 ],
-                "summary": "Delete a specific city",
-                "operationId": "c7eb2706ee6f40cc19ce27b288ba0641",
+                "summary": "Delete a city",
+                "description": "Remove a city by ID",
+                "operationId": "deleteCity",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "City ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -161,10 +176,177 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "City deleted successfully"
+                        "description": "City deleted"
                     },
                     "404": {
                         "description": "City not found"
+                    }
+                }
+            }
+        },
+        "/api/permissions": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Retrieve a list of permissions",
+                "description": "Get all permissions",
+                "operationId": "getPermissions",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Permission"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Create a new permission",
+                "description": "Add a new permission",
+                "operationId": "createPermission",
+                "requestBody": {
+                    "description": "Permission details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Permission"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Permission created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Permission"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/permissions/{id}": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Retrieve a specific permission",
+                "description": "Get permission by ID",
+                "operationId": "getPermissionById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Permission"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Permission not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Update a permission",
+                "description": "Update permission details",
+                "operationId": "updatePermission",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated permission details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Permission"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Permission updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Permission"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Permission not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Delete a permission",
+                "description": "Remove a permission by ID",
+                "operationId": "deletePermission",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Permission deleted"
+                    },
+                    "404": {
+                        "description": "Permission not found"
                     }
                 }
             }
@@ -175,7 +357,8 @@
                     "Persons"
                 ],
                 "summary": "Retrieve a list of persons",
-                "operationId": "107a8be4c2c08fe6669c64462f1aad20",
+                "description": "Get all persons",
+                "operationId": "getPersons",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -197,20 +380,22 @@
                     "Persons"
                 ],
                 "summary": "Create a new person",
-                "operationId": "676c149826876351e3493b978749ccc5",
+                "description": "Add a new person",
+                "operationId": "createPerson",
                 "requestBody": {
+                    "description": "Person details",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PersonRequest"
+                                "$ref": "#/components/schemas/Person"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Person created successfully",
+                        "description": "Person created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -219,8 +404,8 @@
                             }
                         }
                     },
-                    "422": {
-                        "description": "Validation error"
+                    "400": {
+                        "description": "Invalid input"
                     }
                 }
             }
@@ -231,11 +416,13 @@
                     "Persons"
                 ],
                 "summary": "Retrieve a specific person",
-                "operationId": "da8f22a7533683500c06f5dc25a53e4e",
+                "description": "Get person by ID",
+                "operationId": "getPersonById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Person ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -262,12 +449,14 @@
                 "tags": [
                     "Persons"
                 ],
-                "summary": "Update a specific person",
-                "operationId": "10838011da2bb73bd80810b158afe2e9",
+                "summary": "Update a person",
+                "description": "Update person details",
+                "operationId": "updatePerson",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Person ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -275,18 +464,19 @@
                     }
                 ],
                 "requestBody": {
+                    "description": "Updated person details",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PersonRequest"
+                                "$ref": "#/components/schemas/Person"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Person updated successfully",
+                        "description": "Person updated",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -297,9 +487,6 @@
                     },
                     "404": {
                         "description": "Person not found"
-                    },
-                    "422": {
-                        "description": "Validation error"
                     }
                 }
             },
@@ -307,12 +494,14 @@
                 "tags": [
                     "Persons"
                 ],
-                "summary": "Delete a specific person",
-                "operationId": "6d623c98fa609eb109fb50587401ac71",
+                "summary": "Delete a person",
+                "description": "Remove a person by ID",
+                "operationId": "deletePerson",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Person ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -321,10 +510,177 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Person deleted successfully"
+                        "description": "Person deleted"
                     },
                     "404": {
                         "description": "Person not found"
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Retrieve a list of roles",
+                "description": "Get all roles",
+                "operationId": "getRoles",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Role"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Create a new role",
+                "description": "Add a new role",
+                "operationId": "createRole",
+                "requestBody": {
+                    "description": "Role details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Role"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Role created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Role"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Retrieve a specific role",
+                "description": "Get role by ID",
+                "operationId": "getRoleById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Role"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update a role",
+                "description": "Update role details",
+                "operationId": "updateRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated role details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Role"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Role"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Delete a role",
+                "description": "Remove a role by ID",
+                "operationId": "deleteRole",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Role deleted"
+                    },
+                    "404": {
+                        "description": "Role not found"
                     }
                 }
             }
@@ -335,7 +691,8 @@
                     "States"
                 ],
                 "summary": "Retrieve a list of states",
-                "operationId": "4136acf478452d9e777d0a2ef5ef82ef",
+                "description": "Get all states",
+                "operationId": "getStates",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -357,20 +714,22 @@
                     "States"
                 ],
                 "summary": "Create a new state",
-                "operationId": "13966ecd36f0f53394a45417fba6da76",
+                "description": "Add a new state",
+                "operationId": "createState",
                 "requestBody": {
+                    "description": "State details",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/StateRequest"
+                                "$ref": "#/components/schemas/State"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "State created successfully",
+                        "description": "State created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -379,8 +738,8 @@
                             }
                         }
                     },
-                    "422": {
-                        "description": "Validation error"
+                    "400": {
+                        "description": "Invalid input"
                     }
                 }
             }
@@ -391,11 +750,13 @@
                     "States"
                 ],
                 "summary": "Retrieve a specific state",
-                "operationId": "c31ac7dd51a3bfa8594c1a7a22cf09cb",
+                "description": "Get state by ID",
+                "operationId": "getStateById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "State ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -422,12 +783,14 @@
                 "tags": [
                     "States"
                 ],
-                "summary": "Update a specific state",
-                "operationId": "8f1648448a29db32e3b505fbf287c61d",
+                "summary": "Update a state",
+                "description": "Update state details",
+                "operationId": "updateState",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "State ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -435,18 +798,19 @@
                     }
                 ],
                 "requestBody": {
+                    "description": "Updated state details",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/StateRequest"
+                                "$ref": "#/components/schemas/State"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "State updated successfully",
+                        "description": "State updated",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -457,9 +821,6 @@
                     },
                     "404": {
                         "description": "State not found"
-                    },
-                    "422": {
-                        "description": "Validation error"
                     }
                 }
             },
@@ -467,12 +828,14 @@
                 "tags": [
                     "States"
                 ],
-                "summary": "Delete a specific state",
-                "operationId": "d4178890ff552194d46de969fab2cb1d",
+                "summary": "Delete a state",
+                "description": "Remove a state by ID",
+                "operationId": "deleteState",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "State ID",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -481,10 +844,119 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "State deleted successfully"
+                        "description": "State deleted"
                     },
                     "404": {
                         "description": "State not found"
+                    }
+                }
+            }
+        },
+        "/api/users/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Register a new user",
+                "description": "Create a new user with personal data association",
+                "operationId": "registerUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password",
+                                    "person_id"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret123"
+                                    },
+                                    "person_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Users"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Login a user",
+                "description": "Authenticate user and return token",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcd...."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
                     }
                 }
             }
@@ -495,7 +967,7 @@
                     "Users"
                 ],
                 "summary": "Retrieve a list of users",
-                "operationId": "eaedf6aa84fde38a08bf5d87308169f7",
+                "operationId": "getUsers",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -504,43 +976,11 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/User"
+                                        "$ref": "#/components/schemas/Users"
                                     }
                                 }
                             }
                         }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Create a new user",
-                "operationId": "e2308aae8643f8f4d79821a6399114f3",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserRequest"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error"
                     }
                 }
             }
@@ -551,7 +991,7 @@
                     "Users"
                 ],
                 "summary": "Retrieve a specific user",
-                "operationId": "e0e2899dacd82633162b668cc31d8116",
+                "operationId": "getUserById",
                 "parameters": [
                     {
                         "name": "id",
@@ -568,7 +1008,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "$ref": "#/components/schemas/Users"
                                 }
                             }
                         }
@@ -582,8 +1022,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update a specific user",
-                "operationId": "15f5757522724ebca9bac30479321b45",
+                "summary": "Update a user",
+                "operationId": "updateUser",
                 "parameters": [
                     {
                         "name": "id",
@@ -599,27 +1039,38 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserRequest"
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "newSecret123"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "User updated successfully",
+                        "description": "User updated",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "$ref": "#/components/schemas/Users"
                                 }
                             }
                         }
                     },
                     "404": {
                         "description": "User not found"
-                    },
-                    "422": {
-                        "description": "Validation error"
                     }
                 }
             },
@@ -627,8 +1078,8 @@
                 "tags": [
                     "Users"
                 ],
-                "summary": "Delete a specific user",
-                "operationId": "98b6e09e3d231384330198299feb017f",
+                "summary": "Delete a user",
+                "operationId": "deleteUser",
                 "parameters": [
                     {
                         "name": "id",
@@ -641,7 +1092,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "User deleted successfully"
+                        "description": "User deleted"
                     },
                     "404": {
                         "description": "User not found"
@@ -653,6 +1104,11 @@
     "components": {
         "schemas": {
             "City": {
+                "required": [
+                    "id",
+                    "name",
+                    "state_id"
+                ],
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -660,44 +1116,55 @@
                     },
                     "name": {
                         "type": "string",
-                        "example": "New York"
+                        "example": "Bogotá"
                     },
-                    "id_state": {
+                    "state_id": {
                         "type": "integer",
                         "example": 1
-                    },
-                    "state": {
-                        "$ref": "#/components/schemas/State"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
                     }
                 },
                 "type": "object"
             },
-            "CityRequest": {
+            "Permission": {
                 "required": [
-                    "name",
-                    "id_state"
+                    "id",
+                    "name"
                 ],
                 "properties": {
-                    "name": {
-                        "type": "string",
-                        "example": "New York"
-                    },
-                    "id_state": {
+                    "id": {
                         "type": "integer",
                         "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "edit_articles"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Permission to edit articles"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
                     }
                 },
                 "type": "object"
             },
             "Person": {
+                "required": [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "city_id",
+                    "state_id"
+                ],
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -705,191 +1172,102 @@
                     },
                     "first_name": {
                         "type": "string",
-                        "example": "John"
+                        "example": "Juan"
                     },
                     "last_name": {
                         "type": "string",
-                        "example": "Doe"
-                    },
-                    "national_id": {
-                        "type": "string",
-                        "example": "123456789"
+                        "example": "Pérez"
                     },
                     "email": {
                         "type": "string",
-                        "example": "john.doe@example.com"
-                    },
-                    "phone": {
-                        "type": "string",
-                        "example": "+1234567890"
+                        "example": "juan@email.com"
                     },
                     "address": {
                         "type": "string",
-                        "example": "123 Main St"
+                        "example": "Calle 123"
                     },
-                    "id_city": {
+                    "city_id": {
                         "type": "integer",
                         "example": 1
                     },
-                    "city": {
-                        "$ref": "#/components/schemas/City"
+                    "state_id": {
+                        "type": "integer",
+                        "example": 1
                     },
-                    "birthdate": {
+                    "created_date": {
                         "type": "string",
-                        "format": "date",
-                        "example": "1990-01-01"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
                     }
                 },
                 "type": "object"
             },
-            "PersonRequest": {
+            "Role": {
                 "required": [
-                    "first_name"
+                    "id",
+                    "name"
                 ],
                 "properties": {
-                    "first_name": {
-                        "type": "string",
-                        "example": "John"
-                    },
-                    "last_name": {
-                        "type": "string",
-                        "example": "Doe"
-                    },
-                    "national_id": {
-                        "type": "string",
-                        "example": "123456789"
-                    },
-                    "email": {
-                        "type": "string",
-                        "example": "john.doe@example.com"
-                    },
-                    "phone": {
-                        "type": "string",
-                        "example": "+1234567890"
-                    },
-                    "address": {
-                        "type": "string",
-                        "example": "123 Main St"
-                    },
-                    "id_city": {
+                    "id": {
                         "type": "integer",
                         "example": 1
                     },
-                    "birthdate": {
+                    "name": {
                         "type": "string",
-                        "format": "date",
-                        "example": "1990-01-01"
+                        "example": "admin"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Administrator role"
                     }
                 },
                 "type": "object"
             },
             "State": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Active"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "StateRequest": {
                 "required": [
+                    "id",
                     "name"
                 ],
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
                     "name": {
                         "type": "string",
-                        "example": "Active"
+                        "example": "Cundinamarca"
                     }
                 },
                 "type": "object"
             },
-            "User": {
+            "Users": {
+                "required": [
+                    "id",
+                    "username",
+                    "is_active"
+                ],
                 "properties": {
                     "id": {
                         "type": "integer",
                         "example": 1
                     },
-                    "id_person": {
-                        "type": "integer",
-                        "example": 1
-                    },
                     "username": {
                         "type": "string",
                         "example": "johndoe"
                     },
-                    "password_hash": {
-                        "type": "string",
-                        "example": "$2y$10$..."
-                    },
-                    "status": {
-                        "type": "string",
-                        "enum": [
-                            "active",
-                            "suspended"
-                        ],
-                        "example": "active"
-                    },
-                    "person": {
-                        "$ref": "#/components/schemas/Person"
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
                     },
                     "created_at": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
                     },
                     "updated_at": {
                         "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
-            "UserRequest": {
-                "required": [
-                    "username",
-                    "password_hash",
-                    "status"
-                ],
-                "properties": {
-                    "id_person": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "username": {
-                        "type": "string",
-                        "example": "johndoe"
-                    },
-                    "password_hash": {
-                        "type": "string",
-                        "example": "password123"
-                    },
-                    "status": {
-                        "type": "string",
-                        "enum": [
-                            "active",
-                            "suspended"
-                        ],
-                        "example": "active"
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
                     }
                 },
                 "type": "object"
@@ -902,8 +1280,16 @@
             "description": "Cities"
         },
         {
+            "name": "Permissions",
+            "description": "Permissions"
+        },
+        {
             "name": "Persons",
             "description": "Persons"
+        },
+        {
+            "name": "Roles",
+            "description": "Roles"
         },
         {
             "name": "States",
