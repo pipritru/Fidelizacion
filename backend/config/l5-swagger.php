@@ -51,6 +51,11 @@ return [
                      base_path('app/Models/Role.php'),
                      base_path('app/Models/Permission.php'),
                      base_path('app/Models/City.php'),
+                     base_path('app/Models/Order.php'),
+                     base_path('app/Models/OrderItem.php'),
+                     base_path('app/Models/LoyaltyPoint.php'),
+                     base_path('app/Models/TransactionPoint.php'),
+                     base_path('app/Models/Person.php'),
 
                 ],
             ],

@@ -8,6 +8,9 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+
 
 
 /*
@@ -35,4 +38,8 @@ Route::resource('permissions', PermissionController::class);
 Route::resource('users', UserController::class);
 Route::post('users/register', [UserController::class, 'register']);
 Route::post('users/login', [UserController::class, 'login']);
+Route::resource('orders', OrderController::class);
+Route::resource('products', ProductController::class);
+Route::Patch ('/products/{id}/toggle-status', [ProductController::class, 'toggleStatus']);
+
 
