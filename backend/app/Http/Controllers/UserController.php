@@ -48,16 +48,27 @@ class UserController extends Controller
  */
 public function register(Request $request): JsonResponse
 {
+
     $validated = $request->validate([
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:persons,email',
         'username' => 'required|string|unique:users,username',
         'password' => 'required|string|min:6',
-        'person_id' => 'required|exists:users,id', // Cambia 'people' por 'users'
     ]);
 
+    // Crear la persona primero
+    $person = \App\Models\Person::create([
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'email' => $validated['email'],
+    ]);
+
+        // Crear el usuario asociado a la persona
     $user = Users::create([
         'username' => $validated['username'],
         'password' => Hash::make($validated['password']),
-        'person_id' => $validated['person_id'],
+            'person_id' => $person->id,
         'is_active' => true,
     ]);
 

@@ -1,0 +1,134 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+.prueba-bg {
+  min-height: 100vh;
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  background: #f5f6fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prueba-cuadro-global {
+  display: flex;
+  background: #fff;
+  border-radius: 40px;
+  box-shadow: 0 8px 32px rgba(30,41,59,0.18);
+  overflow: hidden;
+  width: 1500px;
+  min-height: 850px;
+}
+.split-img {
+  width: 45%; 
+  background:     #a0bdbe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0;
+}
+
+.split-img img {
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+}
+
+.split-form {
+  width: 55%;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.prueba-title {
+  margin-bottom: 1rem;
+  color: #223;
+  font-size: 1.6rem;
+}
+
+.prueba-text {
+  margin-bottom: 1.5rem;
+  color: #444;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 2.5px solid #1976d2;
+  color: #1976d2;
+  padding: 1.1rem 3.5rem;
+  border-radius: 2.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn.active {
+  background: #1976d2;
+  color: #fff;
+  border: 2.5px solid #1976d2;
+}
+
+.formulario {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.formulario input {
+  width: 90%;
+  padding: 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.formulario input:focus {
+  border: 1.5px solid #1976d2;
+}
+
+.form-btn {
+  width: 90%;
+  padding: 1rem;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.form-btn:hover {
+  background: #1565c0;
+}
+
