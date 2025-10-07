@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
+use App\Models\Role;
 
 /**
  * @OA\Schema(
@@ -57,22 +58,39 @@ public function register(Request $request): JsonResponse
         'password' => 'required|string|min:6',
     ]);
 
-    // Crear la persona primero
-    $person = \App\Models\Person::create([
-        'first_name' => $validated['first_name'],
-        'last_name' => $validated['last_name'],
-        'email' => $validated['email'],
-    ]);
+    // Usar transacción para asegurar que ambos registros se crean juntos
+    try {
+        \DB::beginTransaction();
 
-        // Crear el usuario asociado a la persona
-    $user = Users::create([
-        'username' => $validated['username'],
-        'password' => Hash::make($validated['password']),
+        // Crear la persona primero
+        $person = \App\Models\Person::create([
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+        ]);
+
+        // Buscar el rol 'cliente' y validar que existe
+        $clienteRole = Role::where('name', 'cliente')->first();
+        if (!$clienteRole) {
+            \DB::rollBack();
+            return response()->json(['error' => 'No existe el rol cliente en la base de datos'], 500);
+        }
+
+        // Crear el usuario asociado a la persona con el role_id correcto
+        $user = Users::create([
+            'username' => $validated['username'],
+            'password' => Hash::make($validated['password']),
             'person_id' => $person->id,
-        'is_active' => true,
-    ]);
+            'role_id' => $clienteRole->id,
+            'is_active' => true,
+        ]);
 
-    return response()->json($user, 201);
+        \DB::commit();
+        return response()->json($user, 201);
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return response()->json(['error' => 'Error al registrar usuario', 'details' => $e->getMessage()], 500);
+    }
 }
 
     /**
