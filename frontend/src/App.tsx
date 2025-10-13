@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login_Singup";
-import Home from "./pages/app";
+import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
-import Admin from "./pages/admin";
+import Admin from "./pages/Admin";
 
 
 function App() {

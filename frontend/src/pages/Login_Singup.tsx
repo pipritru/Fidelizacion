@@ -17,7 +17,6 @@ export default function Prueba() {
     try {
       const res = await api.post("/api/users/login", loginInputs);
 
-      });
       setTimeout(() => navigate("/home"), 1000);
     } catch (err: any) {
       if (err.response) {

@@ -1,0 +1,55 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+.admin-dashboard {
+  width: 400px;
+  background: #1976d2;
+  color: #ffffff;
+  height: 100vh;
+  padding: 20px 0;
+}
+
+.sidebar-profile {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.sidebar-avatar {
+  width: 60px;
+  border-radius: 50%;
+}
+.sidebar-name {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+}
+.sidebar-menu li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.sidebar-menu li:hover {
+  background: #444;
+}
+
+.sidebar-close-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
