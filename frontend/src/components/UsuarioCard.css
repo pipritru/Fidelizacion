@@ -1,0 +1,166 @@
+    /* Reglas mínimas necesarias para UsuarioCard (vertical) */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* Estilos usados por `UsuarioCard.tsx` */
+.usuario-card-vertical {
+  height: 420px;
+  width: 340px;
+  min-height: 380px;
+  background: #fff;
+  color: #222;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.12);
+  padding: 32px 24px 24px 24px;
+  margin: 18px;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Badge en flujo: aparece debajo del avatar, centrada */
+.usuario-estado-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.6px;
+}
+
+.usuario-estado-badge.activo { background: #43a047; }
+.usuario-estado-badge.inactivo { background: #e53935; }
+
+.usuario-avatar-vertical img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #1976d2;
+  background: #eee;
+  display: block;
+  margin: 24px auto 8px auto;
+}
+
+.usuario-info-vertical {
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Contenedor de acciones debajo del avatar (solo diseño) */
+.usuario-acciones {
+  margin-top: 18px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* Icon-only buttons: sin fondo, solo el icono coloreado */
+.accion-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  padding: 4px;
+  font-size: 20px;
+}
+
+.accion-icon.editar svg { color: #fdd835; /* amarillo (icono) */ }
+.accion-icon.eliminar svg { color: #e53935; /* rojo (icono) */ }
+
+/* Badge posicionado sobre el avatar */
+.usuario-avatar-vertical {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.usuario-avatar-vertical .usuario-estado-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+}
+
+.usuario-nombre-rol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.usuario-username-vertical { text-align: center; }
+.usuario-rol-vertical {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.95;
+  color: #1976d2;
+}
+
+.usuario-email-vertical {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* Variante simple (usada cuando se pasa `variant="simple"` al componente) */
+.usuario-card-simple {
+  background: #1976d2;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(25, 118, 210, 0.12);
+  padding: 32px 24px 24px 24px;
+  width: 340px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  margin: 18px;
+  position: relative;
+}
+
+.usuario-avatar-simple img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  background: #eee;
+  display: block;
+  margin-bottom: 18px;
+}
+
+/* Notas: se eliminaron selectores no usados por `UsuarioCard.tsx` (p.ej. `.usuario-card`, `.usuario-card-simple`, `.usuario-avatar-simple`, `.usuario-info-grid`, etc.). Si quieres que los recupere o los convierta en variantes (BEM/modifiers), dime cuál mantener. */

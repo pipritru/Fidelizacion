@@ -1,0 +1,81 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+.usuarios-container {
+  padding: 32px;
+}
+
+.usuarios-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 52px;
+  margin-bottom: 16px;
+}
+
+.usuarios-header h2 {
+  margin: 0;
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.usuarios-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.usuarios-btn:hover {
+  background: #1565c0;
+}
+
+.usuarios-divider {
+  border: none;
+  border-top: 1.5px solid #df0c0c;
+  margin: 0 0 18px 0;
+}
+
+.usuarios-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.usuarios-label {
+  font-size: 1rem;
+  color: #222;
+  margin-right: 8px;
+}
+
+.usuarios-select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-right: 8px;
+}
+
+.usuarios-search {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  min-width: 180px;
+}

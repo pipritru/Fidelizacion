@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login_Singup";
 import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 
 
@@ -11,7 +10,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={< Home />} />
-        <Route path="/dashboard" element={< Dashboard />} />
         <Route path="/admin" element={< Admin />} />
 
       </Routes>

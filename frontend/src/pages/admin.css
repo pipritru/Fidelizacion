@@ -11,11 +11,9 @@ html, body {
 }
 
 .admin-dashboard {
-  width: 400px;
-  background: #1976d2;
-  color: #ffffff;
+  display: flex;
   height: 100vh;
-  padding: 20px 0;
+  background: #fff;
 }
 
 .sidebar-profile {
@@ -38,13 +36,33 @@ html, body {
 .sidebar-menu li {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
+  gap: 18px;           /* Más espacio entre ícono y texto */
+  padding: 20px 32px;  /* Más alto y más espacio lateral */
+  font-size: 1.25rem;  /* Texto más grande */
+  color: #fff;
   cursor: pointer;
   transition: background 0.2s;
 }
 .sidebar-menu li:hover {
-  background: #444;
+  background: #1565c0; /* Un azul más oscuro al pasar el mouse */
+}
+
+.sidebar-menu-icons {
+  list-style: none;
+  padding: 0;
+  margin-top: 80px;
+}
+.sidebar-menu-icons li:hover {
+  background: #1565c0; /* Un azul más oscuro al pasar el mouse */
+}
+
+.sidebar-menu-icons li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;     /* Más alto */
+  font-size: 2rem;     /* Íconos más grandes */
+  color: #fff;
 }
 
 .sidebar-close-container {
