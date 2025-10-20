@@ -731,6 +731,135 @@
                 }
             }
         },
+        "/api/users/{id}/points": {
+            "get": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Obtener balance y transacciones de puntos de un usuario",
+                "operationId": "274130abd19166ab534d1049cd5e8441",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Balance",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "integer"
+                                        },
+                                        "total_points": {
+                                            "type": "integer"
+                                        },
+                                        "transactions": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "order_id": {
+                                                        "type": "integer",
+                                                        "nullable": true
+                                                    },
+                                                    "points": {
+                                                        "type": "integer"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "transaction_date": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}/points/adjust": {
+            "post": {
+                "tags": [
+                    "Points"
+                ],
+                "summary": "Ajustar puntos de un usuario (admin)",
+                "operationId": "6ccbd764c71ade68776d1a22be2fe796",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "points": {
+                                        "type": "integer"
+                                    },
+                                    "reason": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ajuste aplicado"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -2033,6 +2162,14 @@
                 },
                 "type": "object"
             }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "Bearer",
+                "description": "Ingrese el token en el formato: Bearer <token>"
+            }
         }
     },
     "tags": [
@@ -2053,6 +2190,10 @@
             "description": "Persons"
         },
         {
+            "name": "Points",
+            "description": "Points"
+        },
+        {
             "name": "Products",
             "description": "Products"
         },
@@ -2067,6 +2208,11 @@
         {
             "name": "Users",
             "description": "Users"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
         }
     ]
 }

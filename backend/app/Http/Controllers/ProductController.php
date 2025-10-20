@@ -19,6 +19,8 @@ use Illuminate\Validation\ValidationException;
  *     @OA\Property(property="id", type="integer", format="int64", example=1),
  *     @OA\Property(property="name", type="string", maxLength=255, example="Producto Ejemplo"),
  *     @OA\Property(property="price", type="number", format="float", example=29.99),
+ *     @OA\Property(property="points", type="integer", example=100, description="Puntos que otorga este producto por unidad"),
+ *     @OA\Property(property="points_cost", type="integer", example=200, description="Costo en puntos para canjear este producto"),
  *     @OA\Property(property="is_active", type="boolean", example=true),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T00:00:00Z"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-01-01T00:00:00Z")
@@ -139,9 +141,10 @@ class ProductController extends Controller
      *         @OA\JsonContent(
      *             required={"name", "price"},
      *             @OA\Property(property="name", type="string", maxLength=255, example="Producto Ejemplo"),
-    *             @OA\Property(property="price", type="number", format="float", minimum=0, example=29.99),
-    *             @OA\Property(property="points", type="integer", example=100, description="Puntos que otorga este producto por unidad"),
-     *             @OA\Property(property="is_active", type="boolean", example=true)
+ *             @OA\Property(property="price", type="number", format="float", minimum=0, example=29.99),
+ *             @OA\Property(property="points", type="integer", example=100, description="Puntos que otorga este producto por unidad"),
+ *             @OA\Property(property="points_cost", type="integer", example=200, description="Costo en puntos para canjear este producto"),
+ *             @OA\Property(property="is_active", type="boolean", example=true)
      *         )
      *     ),
      *     @OA\Response(

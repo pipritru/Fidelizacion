@@ -253,9 +253,9 @@ public function register(Request $request): JsonResponse
             'loyalty_point_id' => $lp->id,
             'order_id' => null,
             'points' => abs($points),
-            'type' => $type,
+            'type' => 'adjustment',
             'transaction_date' => now(),
-            'description' => $request->input('reason', 'Manual adjustment by admin')
+            'description' => $request->input('reason', 'Manual adjustment by admin') . ' (by user_id: ' . (auth()->id() ?? 'system') . ')'
         ]);
 
         if ($type === 'credit') {

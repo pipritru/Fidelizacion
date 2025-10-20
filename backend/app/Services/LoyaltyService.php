@@ -15,6 +15,10 @@ class LoyaltyService
         $user = $order->user;
         if (!$user) return;
 
+        // Prevent double-crediting: if a transaction already exists for this order, skip
+        $exists = TransactionPoint::where('order_id', $order->id)->exists();
+        if ($exists) return;
+
         // Calculate points from products (product.points * quantity)
         $points = 0;
         foreach ($order->orderItems as $item) {

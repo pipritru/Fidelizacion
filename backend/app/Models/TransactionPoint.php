@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionPoint extends Model
 {
-    protected $fillable = ['loyalty_point_id', 'order_id', 'points', 'type', 'transaction_date', 'description'];
+    protected $fillable = ['loyalty_point_id', 'order_id', 'points', 'type', 'transaction_date', 'description', 'created_by'];
 
     public function loyaltyPoint()
     {

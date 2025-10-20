@@ -53,17 +53,28 @@ class OrderController extends Controller
      *     summary="Create a new order",
      *     description="Add a new order",
      *     operationId="createOrder",
-     *     @OA\RequestBody(
-     *         description="Order details",
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"user_id", "total_amount", "order_date", "status"},
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="total_amount", type="number", format="float", example=159.99),
-     *             @OA\Property(property="order_date", type="string", format="date", example="2024-01-15"),
-     *             @OA\Property(property="status", type="string", example="pending")
-     *         )
-     *     ),
+    *     @OA\RequestBody(
+    *         description="Order details. You can include `items` to create order items in the same request.",
+    *         required=true,
+    *         @OA\JsonContent(
+    *             required={"user_id", "total_amount", "order_date", "status"},
+    *             @OA\Property(property="user_id", type="integer", example=1),
+    *             @OA\Property(property="total_amount", type="number", format="float", example=159.99),
+    *             @OA\Property(property="order_date", type="string", format="date", example="2024-01-15"),
+    *             @OA\Property(property="status", type="string", example="pending"),
+    *             @OA\Property(
+    *                 property="items",
+    *                 type="array",
+    *                 @OA\Items(
+    *                     type="object",
+    *                     required={"product_id","quantity","subtotal"},
+    *                     @OA\Property(property="product_id", type="integer", example=5),
+    *                     @OA\Property(property="quantity", type="integer", example=1),
+    *                     @OA\Property(property="subtotal", type="number", format="float", example=159.99)
+    *                 )
+    *             )
+    *         )
+    *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Order created",
@@ -82,10 +93,58 @@ class OrderController extends Controller
             'total_amount' => 'required|numeric|min:0',
             'order_date' => 'required|date',
             'status' => 'required|in:pending,processing,completed,cancelled',
+            'items' => 'sometimes|array',
+            'items.*.product_id' => 'required_with:items|exists:products,id',
+            'items.*.quantity' => 'required_with:items|integer|min:1',
+            'items.*.subtotal' => 'required_with:items|numeric|min:0',
         ]);
 
-        $order = Order::create($validated);
-        return response()->json($order, 201);
+        // Si vienen items, verificamos que la suma de subtotales coincida con total_amount
+        if (isset($validated['items']) && is_array($validated['items'])) {
+            $sum = 0;
+            foreach ($validated['items'] as $it) {
+                $sum += (float) $it['subtotal'];
+            }
+            // Comparación con tolerancia para floats
+            if (abs($sum - (float)$validated['total_amount']) > 0.01) {
+                return response()->json(['error' => 'El total_amount no coincide con la suma de los subtotales de items'], 422);
+            }
+        }
+
+        // Crear orden y sus items en una transacción
+        try {
+            \DB::beginTransaction();
+
+            $orderData = [
+                'user_id' => $validated['user_id'],
+                'total_amount' => $validated['total_amount'],
+                'order_date' => $validated['order_date'],
+                'status' => $validated['status'],
+            ];
+
+            $order = Order::create($orderData);
+
+            if (!empty($validated['items']) && is_array($validated['items'])) {
+                $itemsToCreate = [];
+                foreach ($validated['items'] as $it) {
+                    $itemsToCreate[] = [
+                        'product_id' => $it['product_id'],
+                        'quantity' => $it['quantity'],
+                        'subtotal' => $it['subtotal'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+                $order->orderItems()->createMany($itemsToCreate);
+            }
+
+            \DB::commit();
+            $order->load(['orderItems.product', 'user']);
+            return response()->json($order, 201);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return response()->json(['error' => 'Error creando la orden', 'details' => $e->getMessage()], 500);
+        }
     }
 
     /**
