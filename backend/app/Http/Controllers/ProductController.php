@@ -139,7 +139,8 @@ class ProductController extends Controller
      *         @OA\JsonContent(
      *             required={"name", "price"},
      *             @OA\Property(property="name", type="string", maxLength=255, example="Producto Ejemplo"),
-     *             @OA\Property(property="price", type="number", format="float", minimum=0, example=29.99),
+    *             @OA\Property(property="price", type="number", format="float", minimum=0, example=29.99),
+    *             @OA\Property(property="points", type="integer", example=100, description="Puntos que otorga este producto por unidad"),
      *             @OA\Property(property="is_active", type="boolean", example=true)
      *         )
      *     ),
@@ -173,6 +174,7 @@ class ProductController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255|unique:products,name',
                 'price' => 'required|numeric|min:0',
+                'points' => 'nullable|integer|min:0',
                 'is_active' => 'boolean'
             ]);
 
@@ -326,6 +328,7 @@ class ProductController extends Controller
             $validated = $request->validate([
                 'name' => 'sometimes|required|string|max:255|unique:products,name,' . $id,
                 'price' => 'sometimes|required|numeric|min:0',
+                'points' => 'sometimes|nullable|integer|min:0',
                 'is_active' => 'sometimes|boolean'
             ]);
 

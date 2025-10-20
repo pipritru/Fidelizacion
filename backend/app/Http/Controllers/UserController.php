@@ -150,7 +150,9 @@ public function register(Request $request): JsonResponse
      */
     public function index(): JsonResponse
     {
-        return response()->json(Users::all());
+        // devolver usuarios incluyendo la relación person (contiene el email)
+        $users = Users::with(['person', 'role'])->get();
+        return response()->json($users);
     }
 
     /**
@@ -168,7 +170,8 @@ public function register(Request $request): JsonResponse
      */
     public function show($id): JsonResponse
     {
-        return response()->json(Users::findOrFail($id));
+        $user = Users::with(['person', 'role'])->findOrFail($id);
+        return response()->json($user);
     }
 
     /**
@@ -225,5 +228,64 @@ public function register(Request $request): JsonResponse
         $user = Users::findOrFail($id);
         $user->delete();
         return response()->json(null, 204);
+    }
+
+    /**
+     * Ajustar puntos de un usuario (sumar o restar). Admin only.
+     */
+    public function adjustPoints(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'points' => 'required|integer',
+            'reason' => 'nullable|string'
+        ]);
+
+        $user = Users::findOrFail($id);
+        $lp = $user->loyaltyPoints()->first();
+        if (!$lp) {
+            $lp = \App\Models\LoyaltyPoint::create(['user_id' => $user->id, 'total_points' => 0]);
+        }
+
+        $points = (int)$request->input('points');
+        $type = $points >= 0 ? 'credit' : 'debit';
+
+        \App\Models\TransactionPoint::create([
+            'loyalty_point_id' => $lp->id,
+            'order_id' => null,
+            'points' => abs($points),
+            'type' => $type,
+            'transaction_date' => now(),
+            'description' => $request->input('reason', 'Manual adjustment by admin')
+        ]);
+
+        if ($type === 'credit') {
+            $lp->increment('total_points', abs($points));
+        } else {
+            $lp->decrement('total_points', abs($points));
+        }
+
+        return response()->json(['success' => true, 'total_points' => $lp->fresh()->total_points]);
+    }
+
+    /**
+     * Reporte simple de puntos por usuario o rango de fechas. Admin only.
+     */
+    public function pointsReport(Request $request): JsonResponse
+    {
+        $from = $request->query('from');
+        $to = $request->query('to');
+
+        $query = \App\Models\LoyaltyPoint::with('user');
+
+        // Basic report: list users and current points
+        $data = $query->get()->map(function($lp) {
+            return [
+                'user_id' => $lp->user_id,
+                'username' => $lp->user ? $lp->user->username : null,
+                'total_points' => $lp->total_points
+            ];
+        });
+
+        return response()->json(['report' => $data]);
     }
 }

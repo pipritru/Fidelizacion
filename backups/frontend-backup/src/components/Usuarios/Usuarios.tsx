@@ -1,6 +1,6 @@
 import React from "react";
 import "./Usuarios.css";
-import UsuarioCard from "./UsuarioCard";
+import UsuarioCard from "../UsuarioCard";
 
 export default function Usuarios() {
   const usuarios = [

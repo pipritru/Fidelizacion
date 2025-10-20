@@ -857,6 +857,11 @@
                                         "minimum": 0,
                                         "example": 29.99
                                     },
+                                    "points": {
+                                        "description": "Puntos que otorga este producto por unidad",
+                                        "type": "integer",
+                                        "example": 100
+                                    },
                                     "is_active": {
                                         "type": "boolean",
                                         "example": true

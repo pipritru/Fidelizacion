@@ -15,9 +15,9 @@ export default function Prueba() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-  await api.post("/api/users/login", loginInputs);
+      const res = await api.post("/api/users/login", loginInputs);
 
-  setTimeout(() => navigate("/home"), 1000);
+      setTimeout(() => navigate("/home"), 1000);
     } catch (err: any) {
       if (err.response) {
         toast.error(err.response.data.message || "Usuario o contraseña incorrectos", {
@@ -52,7 +52,7 @@ export default function Prueba() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-  await api.post("/api/users/register", registerInputs);
+      const res = await api.post("/api/users/register", registerInputs);
       toast.success("¡Registro exitoso!", {
         position: "bottom-left",
         autoClose: 3000,

@@ -1,0 +1,119 @@
+.fu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* eliminada la animación de cierre por petición; sólo entrada muy suave si se desea */
+
+.fu-modal {
+  width: 920px; /* más grande */
+  max-width: calc(100% - 56px);
+  min-height: 540px;
+  background: linear-gradient(180deg, #ffffff, #fbfcfd);
+  border-radius: 16px;
+  padding: 28px 28px 32px 28px;
+  box-shadow: 0 30px 80px rgba(6,18,50,0.44), 0 8px 26px rgba(30,70,200,0.06);
+  display: flex;
+  flex-direction: column;
+  transform-origin: center top;
+  border: 1px solid rgba(30,70,200,0.06);
+  position: relative;
+  overflow: visible;
+}
+
+.fu-header {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 84px; /* más alta para cubrir */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 28px; /* espacio lateral */
+  background: linear-gradient(90deg,#0fb3a6,#23d9c6); /* aguamarina */
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 8px 20px rgba(11,179,166,0.06) inset;
+}
+
+.fu-header h3 { margin: 0; font-size: 1.9rem; color: #fff; font-weight: 800; }
+.fu-close {
+  background: rgba(255,255,255,0.95); /* más visible */
+  color: #0b5f54; /* contraste con aguamarina */
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 8px 20px rgba(11,179,166,0.14);
+  z-index: 6; /* asegurar que esté por encima */
+}
+.fu-close:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(11,179,166,0.16); }
+
+/* asegurar header y close encima del pseudo-fondo */
+.fu-header { z-index: 5; }
+
+.fu-body { padding: 110px 0 36px 0; display: flex; flex-direction: column; gap: 20px; z-index: 2; }
+.fu-body label { display: flex; flex-direction: column; font-size: 1.18rem; color: #233047; }
+.fu-body input, .fu-body select {
+  margin-top: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(35,48,71,0.08);
+  font-size: 1.14rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.fu-row { display: flex; gap: 18px; }
+.fu-row label { flex: 1; }
+
+.fu-footer { display: flex; gap: 14px; justify-content: flex-end; padding-top: 12px; z-index: 3; }
+.fu-cancel {
+  background: transparent;
+  border: 1px solid rgba(35,48,71,0.08);
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.fu-submit {
+  background: #4caf50; /* verde más suave */
+  color: #fff;
+  border: none;
+  padding: 14px 24px; /* grande pero suavizado */
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.02rem;
+  box-shadow: 0 10px 26px rgba(76,175,80,0.14);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.fu-submit:hover { transform: translateY(-3px); box-shadow: 0 16px 44px rgba(76,175,80,0.18); }
+
+/* fondo inferior tipo "escarchado" dentro del modal */
+.fu-modal::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 48%;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(245,247,250,0.94)); /* escarchado */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+

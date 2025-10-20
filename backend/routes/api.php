@@ -42,4 +42,17 @@ Route::resource('orders', OrderController::class);
 Route::resource('products', ProductController::class);
 Route::Patch ('/products/{id}/toggle-status', [ProductController::class, 'toggleStatus']);
 
+// Admin-only routes: require authentication and admin role
+Route::group(['middleware' => ['auth:sanctum', 'role:admin'], 'prefix' => 'admin'], function() {
+    // Example: adjust points for a user
+    Route::post('users/{id}/points', [UserController::class, 'adjustPoints']);
+    // Reports
+    Route::get('reports/points', [UserController::class, 'pointsReport']);
+    // Protect product creation/update/delete through admin
+    Route::post('products', [ProductController::class, 'store']);
+    Route::put('products/{id}', [ProductController::class, 'update']);
+    Route::delete('products/{id}', [ProductController::class, 'destroy']);
+    Route::patch('products/{id}/toggle-status', [ProductController::class, 'toggleStatus']);
+});
+
 

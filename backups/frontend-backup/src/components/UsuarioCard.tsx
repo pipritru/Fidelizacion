@@ -1,16 +1,10 @@
-import React from "react"; 
+import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { RiFileEditFill } from "react-icons/ri";
 import "./UsuarioCard.css";
 
-export default function UsuarioCard({ username, email, rol, estado, variant = "vertical", onEdit }: any) {
+export default function UsuarioCard({ username, email, rol, estado, variant = "vertical" }) {
   const containerClass = variant === "simple" ? "usuario-card-simple" : "usuario-card-vertical";
-
-  // proteger contra props que pueden ser objetos (relaciones de la API)
-  const displayUsername = typeof username === "string" ? username : (username?.name ?? username?.username ?? "-");
-  const displayEmail = typeof email === "string" ? email : (email?.email ?? email?.address ?? "-");
-  const displayRole = typeof rol === "string" ? rol : (rol?.name ?? rol?.role ?? "User");
-  const displayEstado = typeof estado === "string" ? estado : (estado ? "Verificado" : "No verificado");
 
   return (
     <div className="usuario-card-wrapper">
@@ -26,15 +20,15 @@ export default function UsuarioCard({ username, email, rol, estado, variant = "v
 
       <div className="usuario-info">
         <div className="usuario-nombre-rol">
-    <span className="usuario-username">{displayUsername}</span>
-    <span className="usuario-rol">{displayRole}</span>
+          <span className="usuario-username">{username}</span>
+          <span className="usuario-rol">{rol}</span>
         </div>
-  <div className="usuario-email">{displayEmail}</div>
+  <div className="usuario-email">{email}</div>
       </div>
 
       {/* iconos de acción al final, solo iconos sin fondo por defecto */}
       <div className="usuario-acciones">
-        <button className="accion-icon editar" title="Editar" onClick={onEdit}>
+        <button className="accion-icon editar" title="Editar">
           <RiFileEditFill />
         </button>
         <button className="accion-icon eliminar" title="Eliminar">

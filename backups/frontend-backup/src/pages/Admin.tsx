@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaTachometerAlt, FaUsers, FaBoxOpen, FaChartBar, FaCog } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
 import { MdOutlineReadMore } from "react-icons/md";
