@@ -28,16 +28,16 @@ class Users extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'user_id');
     }
 
     public function loyaltyPoints()
     {
-        return $this->hasOne(LoyaltyPoint::class);
+        return $this->hasOne(LoyaltyPoint::class, 'user_id');
     }
 }

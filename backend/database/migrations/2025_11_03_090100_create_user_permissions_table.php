@@ -11,20 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_permissions', function (Blueprint $table) {
+        Schema::create('user_permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('permission_id')->constrained('permissions')->onDelete('cascade');
 
-            // Banderas CRUD por rol
+            // Banderas CRUD por usuario
             $table->boolean('can_view')->default(false);
             $table->boolean('can_create')->default(false);
             $table->boolean('can_edit')->default(false);
             $table->boolean('can_delete')->default(false);
 
-            // Evitar duplicados del mismo permiso para un rol
-            $table->unique(['role_id', 'permission_id']);
             $table->timestamps();
+            $table->unique(['user_id', 'permission_id'], 'user_permissions_user_id_permission_id_unique');
         });
     }
 
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_permissions');
+        Schema::dropIfExists('user_permissions');
     }
 };

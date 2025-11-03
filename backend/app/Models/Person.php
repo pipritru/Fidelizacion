@@ -22,6 +22,6 @@ class Person extends Model
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(Users::class, 'person_id');
     }
 }

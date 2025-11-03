@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @OA\Schema(
@@ -247,8 +248,7 @@ public function register(Request $request): JsonResponse
         }
 
         $points = (int)$request->input('points');
-        $type = $points >= 0 ? 'credit' : 'debit';
-
+        // Always record adjustments as 'adjustment'
         \App\Models\TransactionPoint::create([
             'loyalty_point_id' => $lp->id,
             'order_id' => null,
@@ -258,7 +258,7 @@ public function register(Request $request): JsonResponse
             'description' => $request->input('reason', 'Manual adjustment by admin') . ' (by user_id: ' . (auth()->id() ?? 'system') . ')'
         ]);
 
-        if ($type === 'credit') {
+        if ($points >= 0) {
             $lp->increment('total_points', abs($points));
         } else {
             $lp->decrement('total_points', abs($points));
@@ -287,5 +287,48 @@ public function register(Request $request): JsonResponse
         });
 
         return response()->json(['report' => $data]);
+    }
+
+    /**
+     * Devolver permisos efectivos del usuario autenticado por recurso (OR de rol y usuario).
+     */
+    public function myPermissions(Request $request): JsonResponse
+    {
+        /** @var Users $user */
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(['message' => 'No autenticado'], 401);
+        }
+
+        $rows = DB::table('permissions as p')
+            ->leftJoin('role_permissions as rp', function ($join) use ($user) {
+                $join->on('rp.permission_id', '=', 'p.id')
+                    ->where('rp.role_id', '=', $user->role_id);
+            })
+            ->leftJoin('user_permissions as up', function ($join) use ($user) {
+                $join->on('up.permission_id', '=', 'p.id')
+                    ->where('up.user_id', '=', $user->id);
+            })
+            ->select(
+                'p.name',
+                DB::raw('GREATEST(COALESCE(rp.can_view,0), COALESCE(up.can_view,0)) as can_view'),
+                DB::raw('GREATEST(COALESCE(rp.can_create,0), COALESCE(up.can_create,0)) as can_create'),
+                DB::raw('GREATEST(COALESCE(rp.can_edit,0), COALESCE(up.can_edit,0)) as can_edit'),
+                DB::raw('GREATEST(COALESCE(rp.can_delete,0), COALESCE(up.can_delete,0)) as can_delete')
+            )
+            ->orderBy('p.name')
+            ->get();
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[$row->name] = [
+                'can_view' => (bool)$row->can_view,
+                'can_create' => (bool)$row->can_create,
+                'can_edit' => (bool)$row->can_edit,
+                'can_delete' => (bool)$row->can_delete,
+            ];
+        }
+
+        return response()->json(['permissions' => $result]);
     }
 }

@@ -49,7 +49,7 @@ class LoyaltyService
             'loyalty_point_id' => $lp->id,
             'order_id' => $order->id,
             'points' => $totalCredit,
-            'type' => 'credit',
+            'type' => 'earn', // enum: earn | redeem | adjustment
             'transaction_date' => now(),
             'description' => 'Points credited for order #' . $order->id
         ]);

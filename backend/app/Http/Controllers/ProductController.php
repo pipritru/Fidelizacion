@@ -178,6 +178,7 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255|unique:products,name',
                 'price' => 'required|numeric|min:0',
                 'points' => 'nullable|integer|min:0',
+                'points_cost' => 'nullable|integer|min:0',
                 'is_active' => 'boolean'
             ]);
 
@@ -332,6 +333,7 @@ class ProductController extends Controller
                 'name' => 'sometimes|required|string|max:255|unique:products,name,' . $id,
                 'price' => 'sometimes|required|numeric|min:0',
                 'points' => 'sometimes|nullable|integer|min:0',
+                'points_cost' => 'sometimes|nullable|integer|min:0',
                 'is_active' => 'sometimes|boolean'
             ]);
 

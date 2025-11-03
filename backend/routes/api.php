@@ -10,6 +10,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RedemptionController;
 
 
 
@@ -53,13 +54,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
         }
         return response()->json($user);
     });
+
+    // Permisos efectivos del usuario autenticado
+    Route::get('me/permissions', [UserController::class, 'myPermissions']);
     
     // Points endpoints
     Route::get('users/{id}/points', [\App\Http\Controllers\PointsController::class, 'show']);
     Route::post('redeem', [\App\Http\Controllers\PointsController::class, 'redeem']);
+    // Redemption of points for products
+    Route::post('redemptions', [RedemptionController::class, 'store']);
 });
 
-// Admin-only routes: require authentication and admin role (no prefix so URIs stay /api/{resource})
+// Admin-only routes: require authentication and admin role
 Route::group(['middleware' => ['auth:sanctum', \App\Http\Middleware\CheckRole::class . ':administrador']], function() {
     // Admin manages cities, states, roles, permissions and full users management
     Route::resource('cities', CityController::class);
@@ -73,13 +79,13 @@ Route::group(['middleware' => ['auth:sanctum', \App\Http\Middleware\CheckRole::c
     Route::post('users/{id}/points', [UserController::class, 'adjustPoints']);
     Route::get('reports/points', [UserController::class, 'pointsReport']);
 
-    // Products: admin can create/update/delete/toggle-status
-    Route::post('products', [ProductController::class, 'store']);
-    Route::put('products/{id}', [ProductController::class, 'update']);
-    Route::delete('products/{id}', [ProductController::class, 'destroy']);
-    Route::patch('products/{id}/toggle-status', [ProductController::class, 'toggleStatus']);
+    // Products: admin + permiso por bandera (CRUD)
+    Route::post('products', [ProductController::class, 'store'])->middleware('permission:products,create');
+    Route::put('products/{id}', [ProductController::class, 'update'])->middleware('permission:products,edit');
+    Route::delete('products/{id}', [ProductController::class, 'destroy'])->middleware('permission:products,delete');
+    Route::patch('products/{id}/toggle-status', [ProductController::class, 'toggleStatus'])->middleware('permission:products,edit');
 });
 
-// Fallback: keep routes open for unauthenticated read-only access to products if needed
+// Productos públicos (lectura): si quieres forzar permiso de lectura, añade middleware('permission:products,view')
 Route::get('products', [ProductController::class, 'index']);
 Route::get('products/{id}', [ProductController::class, 'show']);

@@ -216,7 +216,7 @@
                 "description": "Add a new order",
                 "operationId": "createOrder",
                 "requestBody": {
-                    "description": "Order details",
+                    "description": "Order details. You can include `items` to create order items in the same request.",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -245,6 +245,32 @@
                                     "status": {
                                         "type": "string",
                                         "example": "pending"
+                                    },
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_id",
+                                                "quantity",
+                                                "subtotal"
+                                            ],
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "subtotal": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 159.99
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -991,6 +1017,11 @@
                                         "type": "integer",
                                         "example": 100
                                     },
+                                    "points_cost": {
+                                        "description": "Costo en puntos para canjear este producto",
+                                        "type": "integer",
+                                        "example": 200
+                                    },
                                     "is_active": {
                                         "type": "boolean",
                                         "example": true
@@ -1320,6 +1351,75 @@
                         "description": "Error interno del servidor"
                     }
                 }
+            }
+        },
+        "/api/redemptions": {
+            "post": {
+                "tags": [
+                    "Redemptions"
+                ],
+                "summary": "Canjear puntos por productos",
+                "operationId": "3736ccc92d7dac815e5baab9bf759699",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "items"
+                                ],
+                                "properties": {
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer"
+                                                },
+                                                "quantity": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Canje exitoso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "remaining_points": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Insufficient points"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/roles": {
@@ -2075,6 +2175,16 @@
                         "format": "float",
                         "example": 29.99
                     },
+                    "points": {
+                        "description": "Puntos que otorga este producto por unidad",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "points_cost": {
+                        "description": "Costo en puntos para canjear este producto",
+                        "type": "integer",
+                        "example": 200
+                    },
                     "is_active": {
                         "type": "boolean",
                         "example": true
@@ -2173,6 +2283,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Redemptions",
+            "description": "Endpoints para canjear puntos por productos"
+        },
         {
             "name": "Cities",
             "description": "Cities"

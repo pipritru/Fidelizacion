@@ -10,7 +10,7 @@ class Permission extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Users::class, 'permission_id');
     }
 
     public function permissions()

@@ -216,16 +216,20 @@ class OrderController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $order = Order::findOrFail($id);
-        
         $validated = $request->validate([
-            'user_id' => 'exists:users,id',
-            'total_amount' => 'numeric|min:0',
-            'order_date' => 'date',
-            'status' => 'in:pending,processing,completed,cancelled',
+            'user_id' => 'sometimes|exists:users,id',
+            'total_amount' => 'sometimes|numeric|min:0',
+            'order_date' => 'sometimes|date',
+            // Alinear status con migraci f3n: 'processing' no est e1 en la tabla
+            'status' => 'sometimes|in:pending,completed,cancelled',
         ]);
 
+        if (empty($validated)) {
+            return response()->json(['error' => 'No fields provided to update or payload keys are invalid'], 422);
+        }
+
         $order->update($validated);
-        return response()->json($order);
+        return response()->json($order->fresh());
     }
 
     /**

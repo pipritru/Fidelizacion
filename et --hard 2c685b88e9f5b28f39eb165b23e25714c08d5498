@@ -1,0 +1,26 @@
+[33mcommit 2c685b88e9f5b28f39eb165b23e25714c08d5498[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Pipritru <cdds0413@gmail>
+Date:   Mon Oct 20 18:52:36 2025 -0500
+
+    feat: soporte de órdenes con items, sistema de lealtad y documentación
+    
+    Se actualiza OrderController::store para aceptar y crear items en la misma petición (validación, suma de subtotales y transacción DB).
+    Se añade soporte en products para points (puntos otorgados) y points_cost (coste de canje); migraciones asociadas incluidas.
+    Implementa dominio de lealtad:
+    LoyaltyService para cálculo y acreditación de puntos (idempotente: evita créditos duplicados por order_id).
+    OrderObserver que dispara la acreditación cuando una orden pasa a completed.
+    Tablas loyalty_points y transaction_points para saldo e historial.
+    Endpoints nuevos / actualizados:
+    GET /api/users/{id}/points — consulta saldo y transacciones (propietario o admin).
+    POST /api/users/{id}/points/adjust — ajuste manual por admin (registro de motivo y auditoría).
+    POST /api/redeem — canje de productos por puntos (verifica saldo y registra transacción).
+    POST /api/orders — ahora acepta items en el body.
+    Auditoría:
+    transaction_points incluye created_by para registrar quién realizó ajustes/redeems.
+    Seguridad:
+    Mejora de CheckRole para coincidencia robusta (múltiples roles, alias, IDs).
+    OpenAPI / Swagger:
+    Anotaciones actualizadas para reflejar campos nuevos (items, points, points_cost, created_by) y regeneración de documentación.
+    Notas:
+    Pendiente implementar PersonPolicy / OrderPolicy y añadir tests de integración (acumulación de puntos, bonus primera compra, canje y ajustes).
+    Verificar en Swagger UI los ejemplos POST y regenerar documentación con php artisan l5-swagger:generate si es necesario.
